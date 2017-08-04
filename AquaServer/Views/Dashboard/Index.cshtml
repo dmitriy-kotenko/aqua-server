@@ -1,0 +1,91 @@
+﻿@using AquaServer.Models
+@using AquaServer.Service.Models.Enums
+@model DashboardViewModel
+
+@section Styles
+{
+	@Styles.Render("~/Content/bootstrap-toggle")
+	@Styles.Render("~/Content/dashboard")
+	@{
+	decimal alphaChannelValue = (Model.CurrentState.Temperature - CurrentStateViewModel.TempDisplayLowerBound) /
+		(CurrentStateViewModel.TempDisplayUpperBound - CurrentStateViewModel.TempDisplayLowerBound);
+	}
+	<link href="@Url.Action("TemperatureBarCss", "Dashboard", new { alphaChannelValue })" rel="stylesheet" />
+}
+
+
+<div class="col-lg-12 hidden-xs">
+	@{ Html.RenderPartial("_TemperatureChart"); }
+</div>
+
+<div class="col-lg-6 initial-hidden">
+	<div class="panel panel-info">
+		<div class="panel-heading">Current state</div>
+		<div id="current-state-section" class="panel-body list-group">
+			@{ Html.RenderPartial("_CurrentStateSection", Model.CurrentState); }
+		</div>
+	</div>
+	<div class="panel panel-info">
+		<div class="panel-heading">Devices</div>
+		<div id="device-control-section" class="panel-body list-group">
+			@foreach (Devices device in Model.SwitchableDevices)
+			{
+				ControlPanelViewModel.DeviceControlOptions deviceControlOptions;
+				if (!Model.ControlPanel.DevicesOptions.TryGetValue(device, out deviceControlOptions))
+				{
+					deviceControlOptions = ControlPanelViewModel.DeviceControlOptions.Default;
+				}
+				<div class="row vertical-align device-control-row list-group-item">
+					<div class="col-xs-4 col-md-3">
+						<div class="device-current-state-label @(deviceControlOptions.CurrentState == DeviceStates.On ? "state-on" : "state-off")"
+							 data-device="@device"
+							 data-current-state="@((byte)deviceControlOptions.CurrentState.GetValueOrDefault())">
+							@device
+						</div>
+					</div>
+
+					<div class="col-xs-8 col-md-9 device-control-column">
+						<div class="checkbox device-schedule-toggle-wrapper">
+							@* ReSharper disable once UnknownCssClass *@
+							<input class="device-schedule-toggle"
+								   type="checkbox"
+								   checked="@deviceControlOptions.UseSchedule"
+								   data-device="@device"
+								   data-toggle="toggle"
+								   data-on="By schedule"
+								   data-off="Manually" />
+						</div>
+
+						<div class="checkbox device-state-toggle-wrapper @(deviceControlOptions.UseSchedule ? "invisible" : string.Empty)"
+							 data-device="@device">
+							@* ReSharper disable once UnknownCssClass *@
+							<input class="device-state-toggle"
+								   type="checkbox"
+								   checked="@(deviceControlOptions.TargetState == DeviceStates.On)"
+								   data-device="@device"
+								   data-toggle="toggle"
+								   data-onstyle="success" />
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+</div>
+
+<div class="col-lg-6 initial-hidden">
+	<div class="panel panel-info">
+		<div class="panel-heading">Device state log</div>
+		<div id="device-state-log-section">
+			@{ Html.RenderPartial("_DeviceStateLogSection", Model.DeviceStates); }
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	@Scripts.Render("~/bundles/bootstrap-toggle")
+	@Scripts.Render("~/bundles/moment")
+	@Scripts.Render("~/bundles/highstock")
+	@Html.Action("TemperatureChartJs", "Common", new { model = Model.TemperatureChart })
+	@Scripts.Render("~/bundles/dashboard")
+}

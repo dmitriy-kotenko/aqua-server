@@ -1,0 +1,28 @@
+﻿@using Newtonsoft.Json
+@model AquaServer.Models.TemperatureChartViewModel
+
+<script type="text/javascript">
+	var chart;
+	$(function() {
+		chart = new window.Highcharts.StockChart({
+			chart: {
+				renderTo: "area_container"
+			},
+			rangeSelector: {
+				buttonTheme: {
+					width: 55
+				},
+				buttons: @Html.Raw(JsonConvert.SerializeObject(Model.Buttons)),
+				selected: @Model.SelectedButtonIndex
+			},
+			series: [
+				{
+					data: @JsonConvert.SerializeObject(Model.Data),
+					name: "Temperature",
+					zoneAxis: "x",
+					zones: @Html.Raw(JsonConvert.SerializeObject(Model.Zones))
+				}
+			]
+		});
+	});
+</script>

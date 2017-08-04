@@ -1,0 +1,24 @@
+﻿@using AquaServer.Core
+@using AquaServer.Service.Models
+
+@model AquaServer.Models.DeviceStateLogViewModel
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Date and time</th>
+			<th>Device</th>
+			<th>State</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (DeviceStateLogRecord logRecord in Model.LogRecords)
+			{
+			<tr>
+				<td>@logRecord.DateTime.ToString(Configuration.LogDateTimeFormat)</td>
+				<td>@logRecord.Device</td>
+				<td>@logRecord.State</td>
+			</tr>
+			}
+	</tbody>
+</table>

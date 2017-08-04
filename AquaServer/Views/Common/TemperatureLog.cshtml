@@ -1,0 +1,10 @@
+﻿@model AquaServer.Models.TemperatureChartViewModel
+
+<div class="col-sm-12">
+	@Html.Partial("_TemperatureChart")
+</div>
+
+@section Scripts {
+	@Scripts.Render("~/bundles/highstock")
+	@Html.Action("TemperatureChartJs", "Common", new { Model })
+}

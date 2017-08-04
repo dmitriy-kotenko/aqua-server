@@ -1,0 +1,44 @@
+﻿@using AquaServer.Core.Utils
+@using AquaServer.Models
+@model CurrentStateViewModel
+
+<div>
+	<div class="row current-state-row list-group-item ">
+		<div class="col-xs-4 col-md-3">
+			<div class="current-state-label">Temperature</div>
+		</div>
+		<div class="col-xs-4 col-md-3 current-state-cell"
+			 data-toggle="tooltip"
+			 data-placement="left"
+			 title="@Math.Round(Model.Temperature, 2) °C">
+			<div class="current-state-value @(Model.TemperatureWarning ? "warning-state" : string.Empty)">
+				@Math.Round(Model.Temperature, 1) °C
+			</div>
+		</div>
+
+		<div class="col-xs-4 col-md-6">
+			<div id="temperature-bar" class="progress">
+				<div id="temperature-bar-progress" class="progress-bar" role="progressbar"
+					 aria-valuemin="@CurrentStateViewModel.TempDisplayLowerBound" aria-valuemax="@CurrentStateViewModel.TempDisplayUpperBound" aria-valuenow="@Model.Temperature">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row current-state-row list-group-item vertical-align">
+		<div class="col-xs-4 col-md-3">
+			<div class="current-state-label">Uptime</div>
+		</div>
+
+		<div class="col-xs-8 col-md-9 current-state-cell minutes-ago"
+			 data-toggle="tooltip"
+			 data-placement="left"
+			 title="@Model.MinutesSinceUpdate">
+			<span id="uptime" class="current-state-value @(Model.UptimeWarning ? "warning-state" : string.Empty)">
+				@Model.Uptime.ToReadableString()
+			</span>
+			<span class="since-label">
+				since @(Model.BootDateTime == DateTime.MinValue ? "..." : Model.BootDateTime.ToString("MMM dd HH:mm"))
+			</span>
+		</div>
+	</div>
+</div>

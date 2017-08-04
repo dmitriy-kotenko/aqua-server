@@ -1,0 +1,5 @@
+﻿CREATE TABLE DiagnosticInfoLog
+(
+	origin_datetime DATETIME2(0) NOT NULL PRIMARY KEY DEFAULT GETUTCDATE(),
+    uptime BIGINT NOT NULL
+)

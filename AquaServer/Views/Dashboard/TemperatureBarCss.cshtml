@@ -1,0 +1,16 @@
+﻿@model decimal
+
+#temperature-bar {
+	margin-left: -15px;
+	margin-bottom: 0;
+	box-shadow: none;
+	-webkit-box-shadow: none;
+	background-image: -webkit-gradient(linear, left top, right top, from(rgba(138,179,255,0.3)),to(rgba(255,107,107,0.3)));
+}
+
+#temperature-bar-progress {
+	width: 0;
+	box-shadow: none;
+	-webkit-box-shadow: none;
+	background-image: -webkit-gradient(linear, left top, right top, from(rgba(138,179,255,0.3)), to(rgba(255,107,107,@Math.Round(Model, 2))));
+}

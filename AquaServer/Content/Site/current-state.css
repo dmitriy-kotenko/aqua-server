@@ -1,0 +1,40 @@
+﻿.current-state-row {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	padding-left: 8px;
+	padding-right: 3px;
+}
+
+.current-state-cell {
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+.current-state-label, .current-state-value {
+	display: inline-block;
+}
+
+.current-state-label {
+	padding-bottom: 4px;
+}
+
+.current-state-value {
+	font-size: large;
+}
+
+.warning-state {
+	background-image: url('/Content/Images/danger.png');
+	background-size: contain;
+	background-position-y: -1px;
+	background-repeat: no-repeat;
+	padding-left: 32px;
+}
+
+#uptime {
+	margin-right: 5px;
+}
+
+.since-label {
+	color: darkgray;
+	white-space: nowrap;
+}

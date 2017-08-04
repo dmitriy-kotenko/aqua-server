@@ -1,0 +1,41 @@
+﻿@using AquaServer.Core
+@using AquaServer.Core.Utils
+@using AquaServer.Service.Models
+@model AquaServer.Models.DiagnosticsViewModel
+
+<div class="col-sm-12">
+	<div class="panel panel-info">
+		<div class="panel-heading">Reboot log</div>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Start time</th>
+					<th>Reboot time</th>
+					<th>Total uptime</th>
+				</tr>
+			</thead>
+			<tbody>
+				@if (Model.RebootLog.LogRecords.Length != 0)
+				{
+					<tr>
+						<td>@Model.RebootLog.LogRecords[0].RebootDateTime.ToString(Configuration.LogDateTimeFormat)</td>
+						<td>...</td>
+						<td>@Model.Uptime.ToReadableString()</td>
+					</tr>
+				}
+				@for (var i = 0; i < Model.RebootLog.LogRecords.Length - 1; i++)
+				{
+					RebootLogRecord logRecord = Model.RebootLog.LogRecords[i];
+					RebootLogRecord previousLogRecord = Model.RebootLog.LogRecords[i + 1];
+
+					DateTime bootDateTime = previousLogRecord.RebootDateTime;
+					<tr>
+						<td>@bootDateTime.ToString(@Configuration.LogDateTimeFormat)</td>
+						<td>@logRecord.RebootDateTime.ToString(@Configuration.LogDateTimeFormat)</td>
+						<td>@logRecord.UptimeToReboot.ToReadableString()</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
